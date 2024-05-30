@@ -1,0 +1,48 @@
+﻿@model LearningPlatform.ViewModels.DepartmentViewModel
+@{
+    Layout = "_Layout_Admin";
+    ViewData["Title"] = "Створити";
+}
+
+<div class="main-container">
+    <section class="space-sm">
+        <div class="container">
+            <div class="row mb-5"></div>
+            <div class="row flex-md-row">
+                <div class="card-body">
+                    <div class="text-center mb-5">
+                        <h1 class="h2 mb-2">Створити кафедру</h1>
+                    </div>
+                    <div style="min-width: 300px;" class="row justify-content-center">
+                        <div style="min-width: 250px;" class="col-6 col-lg-5">
+                            <form method="post" asp-action="Create" enctype="multipart/form-data">
+                                <input type="hidden" id="AppUserId" name="AppUserId" />
+                                <div class="form-row form-group">
+                                    <div class="col mb-3">
+                                        <input asp-for="Name" class="form-control form-control-lg" placeholder="Повна назва"/>
+                                        <span asp-validation-for="Name" class="text-danger"></span>
+                                    </div>
+                                    <div class="col mb-3">
+                                        <input asp-for="Abbreviation" class="form-control form-control-lg" placeholder="Абревіатура" />
+                                        <span asp-validation-for="Abbreviation" class="text-danger"></span>
+                                    </div>
+                                    <div class="col mb-3">
+                                        <select asp-for="FacultyId" asp-items="@(new SelectList(Model.Faculties, nameof(FacultyEntity.Id), nameof(FacultyEntity.Abbreviation)))" class="form-select"></select>
+                                        <span asp-validation-for="FacultyId" class="text-danger"></span>
+                                    </div>
+                                </div>
+
+                                <div class="form-row form-group">
+                                    <div class="col">
+                                        <button class="btn btn-block btn-success btn-lg" type="submit">Створити</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+

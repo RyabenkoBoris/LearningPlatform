@@ -1,0 +1,54 @@
+﻿@model LearningPlatform.ViewModels.LoginUserViewModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Вхід</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/LearningPlatform.styles.css" asp-append-version="true" />
+</head>
+<body>
+    <div class="container min-vh-100 d-flex justify-content-center align-items-center">
+        <div style="width: 30%; min-width: 350px;" class="border bg-white row d-flex justify-content-center">
+            <div class="bg-light p-5 mb-4">
+                <h2 class="text-center">Авторизація у системі</h2>
+            </div>
+            <form asp-controller="Account" asp-action="Login" method="post">
+                <div>
+                    <div data-mdb-input-init class="form-outline mb-4">
+                        <input asp-for="Email" type="email" class="form-control" placeholder="Електронна пошта" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                    <div data-mdb-input-init class="form-outline mb-4">
+                        <input asp-for ="Password" type="password" class="form-control" placeholder="Пароль" />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+                    <div class="row mb-4">
+                        <div class="col d-flex justify-content-center">
+                            <div class="form-check">
+                                <input asp-for="RememberMe" class="form-check-input" type="checkbox" id="form2Example31" checked />
+                                <label class="form-check-label" for="form2Example31">Запам’ятати мене </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" data-mdb-button-init data-mdb-ripple-init class="center btn btn-primary btn-block w-100 mb-4">Вхід</button>
+                @if (ViewData["ValidationMessage"] != null)
+                {
+                    <div class="text-center pb-2">
+                        <span class="text-danger">@ViewData["ValidationMessage"]</span>
+                    </div>
+                }
+            </form>
+        </div>
+    </div>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+</body>
+</html>

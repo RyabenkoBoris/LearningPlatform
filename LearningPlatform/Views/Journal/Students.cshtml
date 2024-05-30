@@ -1,0 +1,30 @@
+﻿@model LearningPlatform.ViewModels.JournalStudentsViewModel
+@{
+    ViewData["Title"] = "Студенти";
+}
+
+<div style="min-width:500px;" class="d-flex justify-content-center">
+    <div class="list-group">
+        <div class="m-3 d-flex justify-content-between">
+            <input style="min-width:300px" class="m-2 w-50 form-control mx-auto" id="myInput" type="text" onkeyup="Filter(1)" placeholder="Пошук...">
+        </div>
+        <div class="text-center">
+            <h1>Журнал - @Model.GroupName</h1>
+        </div>
+        <table>
+            <thead class="text-center">
+            </thead>
+            <tbody id="list" class="text-center">
+                @foreach (var student in Model.Students)
+                {
+                    <tr>
+                        <td class="p-3 fs-3"><a asp-controller="Journal" asp-action="Student" asp-route-id="@Model.JournalId" asp-route-userId="@student.Id" class="text-decoration-none">@student.Name</a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+@section scripts {
+    <script src="~/js/filter.js" asp-append-version="true"></script>
+}

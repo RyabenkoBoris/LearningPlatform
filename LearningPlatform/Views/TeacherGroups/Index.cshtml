@@ -1,0 +1,37 @@
+﻿@model TeacherEntity
+@{
+    Layout = "_Layout_Admin";
+    ViewData["Title"] = "Групи викладачів";
+}
+
+<div style="min-width:500px;" class="d-flex justify-content-center">
+    <div class="list-group">
+        <div class="m-3 d-flex justify-content-between">
+            <input style="min-width:300px" class="m-2 w-50 form-control" id="myInput" type="text" onkeyup="Filter(1)" placeholder="Пошук...">
+            <a class="btn btn-success m-1 w-25 fs-4" asp-controller="TeacherGroups" asp-action="Add" asp-route-id="@Model.Id">Додати</a>
+        </div>
+        <div class="text-center">
+            <h1>Групи викладача</h1>
+        </div>
+        <table>
+            <thead class="text-center">
+                <tr>
+                    <th class="p-3 fs-3" scope="col">Назва</th>
+                </tr>
+            </thead>
+            <tbody id="list" class="text-center">
+                @{
+                    foreach (var item in Model.Groups)
+                    {
+                        <tr>
+                            <td class="p-3 fs-3">@item.Name</td>
+                            <td class="p-3 d-flex justify-content-end">
+                                <a asp-controller="TeacherGroups" asp-action="Delete" asp-route-id="@Model.Id" asp-route-lessonId="@item.Id" class="btn btn-danger m-1">Видалити</a>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

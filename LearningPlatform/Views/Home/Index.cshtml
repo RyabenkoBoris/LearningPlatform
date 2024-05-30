@@ -1,0 +1,86 @@
+﻿@{
+    Layout = "_Layout_Admin";
+    ViewData["Title"] = "Головна сторінка";
+}
+
+
+<div class="row text-center d-flex justify-content-center">
+    <div class="col-md-3 col-lg-2 m-1">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Спеціальності</h5>
+                <p class="card-text">Перегляд та редагування спеціальностей.</p>
+                <a asp-controller="Speciality" asp-action="Index" class="btn btn-primary">Перейти</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 col-lg-2 m-1">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Предмети</h5>
+                <p class="card-text">Перегляд та редагування предметів.</p>
+                <a asp-controller="Lesson" asp-action="Index" class="btn btn-primary">Перейти</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 col-lg-2 m-1">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Підрозділи</h5>
+                <p class="card-text">Перегляд та редагування підрозділів.</p>
+                <a asp-controller="Faculty" asp-action="Index" class="btn btn-primary">Перейти</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 col-lg-2 m-1">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Кафедри</h5>
+                <p class="card-text">Перегляд та редагування кафедр.</p>
+                <a asp-controller="Department" asp-action="Index" class="btn btn-primary">Перейти</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 col-lg-2 m-1">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Групи</h5>
+                <p class="card-text">Перегляд та редагування груп.</p>
+                <a asp-controller="Group" asp-action="Index" class="btn btn-primary">Перейти</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 col-lg-2 m-1">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Викладачі</h5>
+                <p class="card-text">Перегляд та редагування викладачів.</p>
+                <a asp-controller="Teacher" asp-action="Index" class="btn btn-primary">Перейти</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 col-lg-2 m-1">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Студенти</h5>
+                <p class="card-text">Перегляд та редагування студентів.</p>
+                <a asp-controller="Student" asp-action="Index" class="btn btn-primary">Перейти</a>
+            </div>
+        </div>
+    </div>
+    @if (User.IsInRole("SuperAdmin"))
+    {
+        <div class="col-md-3 col-lg-2 m-1">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Адміни</h5>
+                    <p class="card-text">Перегляд та редагування адміністраторів.</p>
+                    <a asp-controller="Admin" asp-action="Index" class="btn btn-primary">Перейти</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+
+

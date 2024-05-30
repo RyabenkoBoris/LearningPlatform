@@ -1,0 +1,22 @@
+﻿body {
+    background-color: #f8f9fa;
+}
+
+.assignment {
+    background-color: #ffffff;
+    border-radius: 5px;
+    padding: 20px;
+    margin-top: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.due-date {
+    font-size: 0.9em;
+    color: #6c757d;
+}
+
+.submit-button {
+    background-color: #ff9800;
+    border: none;
+    color: white;
+}

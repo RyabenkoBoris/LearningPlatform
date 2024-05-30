@@ -1,0 +1,38 @@
+﻿@model LearningPlatform.ViewModels.MemberTeachersViewModel
+@{
+    ViewData["Title"] = "Додати";
+}
+
+<div class="main-container">
+    <section class="space-sm">
+        <div class="container">
+            <div class="row mb-5"></div>
+            <div class="row flex-md-row">
+                <div class="card-body">
+                    <div class="text-center mb-5">
+                        <h1 class="h2 mb-2">Додати викладача</h1>
+                    </div>
+                    <div style="min-width: 300px;" class="row justify-content-center">
+                        <div style="min-width: 250px;" class="col-6 col-lg-5">
+                            <form method="post" asp-action="AddTeacher" enctype="multipart/form-data">
+                                <input asp-for="CourseId" value="@Model.CourseId" />
+                                <div class="form-row form-group">
+                                    <div class="col mb-3">
+                                        <select asp-for="TeacherId" asp-items="@(new SelectList(Model.Users, nameof(UserEntity.TeacherId), nameof(UserEntity.Name)))" class="form-select"></select>
+                                        <span asp-validation-for="TeacherId" class="text-danger"></span>
+                                    </div>
+                                </div>
+
+                                <div class="form-row form-group">
+                                    <div class="col">
+                                        <button class="btn btn-block btn-success btn-lg" type="submit">Додати</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

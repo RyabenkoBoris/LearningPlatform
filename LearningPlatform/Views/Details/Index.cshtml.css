@@ -1,0 +1,14 @@
+﻿.card {
+    width: 300px;
+    min-width: 300px;
+    margin-bottom: 20px;
+}
+
+.card-header {
+    background-color: #f8f9fa;
+    padding: 15px;
+}
+
+.card-body {
+    padding: 15px;
+}

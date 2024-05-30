@@ -1,0 +1,30 @@
+﻿@model LearningPlatform.ViewModels.CourseViewModel
+@{
+    ViewData["Title"] = "Курси";
+}
+
+<div class="d-flex justify-content-end">
+    <a asp-controller="Course" asp-action="Create" class="m-1 btn btn-secondary">Створити курс</a>
+</div>
+<div class="row">
+    @{
+        foreach(var course in Model.Courses)
+        {
+            <div class="card px-0 mx-2">
+                <div class="card-header">
+                    <a asp-controller="Details" asp-action="Index" asp-route-id="@course.Id" class="text-decoration-none">@course.Name</a>
+                    <p>@course.User.Name</p>
+                </div>
+                <div class="card-body d-flex justify-content-center">
+                    @if (@course.User.Name == User.Identity.Name)
+                    {
+                        <div class="my-auto">
+                            <a asp-controller="Course" asp-action="Edit" asp-route-id="@course.Id" class="btn btn-warning">Редагувати</a>
+                            <a asp-controller="Course" asp-action="Delete" asp-route-id="@course.Id" class="btn btn-danger">Видалити</a>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+    }
+</div>

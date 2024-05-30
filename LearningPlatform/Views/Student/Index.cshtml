@@ -1,0 +1,43 @@
+﻿@model List<UserEntity>
+@{
+    Layout = "_Layout_Admin";
+    ViewData["Title"] = "Студенти";
+}
+
+<div style="min-width:800px;" class="d-flex justify-content-center">
+    <div class="list-group">
+        <form method="post" asp-action="Find" enctype="multipart/form-data">
+            <div class="row">
+                <input name="search" style="min-width:300px" class="m-2  form-control col" id="myInput" type="text" placeholder="Пошук...">
+                <button asp-controller="Student" asp-action="Find" class="btn btn-secondary m-1 fs-4 col">Пошук</button>
+                <a asp-controller="Student" asp-action="Create" class="btn btn-success m-1 fs-4 col">Додати</a>
+            </div>
+        </form>
+        <table>
+            <thead class="text-center">
+                <tr>
+                    <th style="min-width:150px" class="p-3 fs-3" scope="col">ПІБ</th>
+                    <th class="p-3 fs-3" scope="col">Підрозділ</th>
+                    <th class="p-3 fs-3" scope="col">Факультет</th>
+                    <th class="p-3 fs-3" scope="col">Група</th>
+                </tr>
+            </thead>
+            <tbody id="list" class="text-center">
+                @{
+                    foreach(var item in Model){
+                        <tr>
+                            <td class="p-3 fs-4 text-break">@item.Name</td>
+                            <td class="p-3 fs-4 text-break">@item.Group?.Department?.Faculty?.Abbreviation</td>
+                            <td class="p-3 fs-4 text-break">@item.Group?.Department?.Abbreviation</td>
+                            <td class="p-3 fs-4 text-break">@item.Group?.Name</td>
+                            <td class="p-3 d-flex justify-content-end">
+                                <a asp-controller="Student" asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning m-1">Редагувати</a>
+                                <a asp-controller="Student" asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger m-1">Видалити</a>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

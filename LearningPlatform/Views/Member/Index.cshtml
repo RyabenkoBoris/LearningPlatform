@@ -1,0 +1,85 @@
+﻿@model LearningPlatform.ViewModels.MemberViewModel
+@{
+    ViewData["Title"] = "Учасники";
+}
+
+<h1 class="text-center">Учасники курсу</h1>
+@if (Model.OwnerName == User.Identity.Name)
+{
+    <div class="d-flex justify-content-end ">
+        <a asp-controller="Member" asp-action="AddTeacher" asp-route-id="@Model.CourseId" class="btn btn-success m-1">Додати викладача</a>
+        <a asp-controller="Member" asp-action="AddGroup" asp-route-id="@Model.CourseId" class="btn btn-success m-1">Додати групу</a>
+    </div>
+}
+<div class="row">
+    <div class="col-12">
+        <div class="card mb-3">
+            <div class="card-header">
+                <h5 class="mb-0">Власник</h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        @Model.Name
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="card mb-3">
+            <div class="card-header">
+                <h5 class="mb-0">Викладачі</h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    @foreach (var teacher in Model.Teachers)
+                    {
+                        <li class="list-group-item d-flex justify-content-between">
+                            @teacher.User.Name
+                            @if(Model.OwnerName == User.Identity.Name){
+                                <a asp-controller="Member" asp-action="DeleteTeacher" asp-route-id="@Model.CourseId" asp-route-teacherId="@teacher.Id" class="btn btn-danger">Видалити</a>
+                            }
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="card mb-3">
+            <div class="card-header">
+                <h5 class="mb-0">Студенти</h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    @foreach (var group in Model.Groups)
+                    {
+                        if(group.Users.Count == 0)
+                        {
+                            @if (Model.OwnerName == User.Identity.Name)
+                            {
+                                <li class="list-group-item d-flex justify-content-end">
+                                    <a asp-controller="Member" asp-action="DeleteGroup" asp-route-id="@Model.CourseId" asp-route-groupId="@group.Id" class="btn btn-danger">@group.Name</a>
+                                </li>
+                            }
+                        }
+                        else
+                        {
+                            @foreach (var student in group.Users)
+                            {
+                                <li class="list-group-item d-flex justify-content-between">
+                                    <span>@student.Name</span>
+                                    @if (Model.OwnerName == User.Identity.Name)
+                                    {
+                                        <a asp-controller="Member" asp-action="DeleteGroup" asp-route-id="@Model.CourseId" asp-route-groupId="@group.Id" class="btn btn-danger">@group.Name</a>
+                                    }
+                                </li>
+                            }
+                        }
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

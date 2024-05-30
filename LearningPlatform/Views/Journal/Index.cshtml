@@ -1,0 +1,43 @@
+﻿@model List<JournalEntity>
+@{
+    ViewData["Title"] = "Журнали";
+}
+
+<div style="min-width:500px;" class="d-flex justify-content-center">
+    <div class="list-group">
+        <div class="m-3 d-flex justify-content-between">
+            <input style="min-width:300px" class="m-2 w-50 form-control mx-auto" id="myInput" type="text" onkeyup="Filter(3)" placeholder="Пошук...">
+        </div>
+        <div class="text-center">
+            <h1>Журнали</h1>
+        </div>
+        <table>
+            <thead class="text-center">
+                <tr>
+                    <th class="p-3 fs-3" scope="col">Предмет</th>
+                    @if (User.IsInRole("Teacher") || User.IsInRole("Admin"))
+                    {
+                        <th class="p-3 fs-3" scope="col">Група</th>
+                    }
+                    <th class="p-3 fs-3" scope="col">Семестр</th>
+                </tr>
+            </thead>
+            <tbody id="list" class="text-center">
+                @foreach (var journal in Model)
+                {
+                    <tr>
+                        <td class="p-3 fs-3"><a asp-controller="Journal" asp-action="@(User.IsInRole("Student") ? "Lesson" : "Students")" asp-route-id="@journal.Id" class="text-decoration-none">@journal.Lesson.Name</a></td>
+                        @if (User.IsInRole("Teacher") || User.IsInRole("Admin"))
+                        {
+                            <td class="p-3 fs-3">@journal.Group.Name</td>
+                        }
+                        <td class="p-3 fs-3">@journal.Semester</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+@section scripts {
+    <script src="~/js/filter.js" asp-append-version="true"></script>
+}

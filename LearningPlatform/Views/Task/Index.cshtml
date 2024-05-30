@@ -1,0 +1,91 @@
+﻿@model LearningPlatform.ViewModels.TaskIndexViewModel
+@{
+    ViewData["Title"] = "Завдання";
+}
+
+<div class="@("row col-lg-9 mx-auto assignment d-flex " + (User.IsInRole("Student") ? "justify-content-between" : "justify-content-center"))">
+    <div class="col-sm-12 mx-2" style="min-width: 300px; max-width: 400px;">
+        <h4>@Model.Name</h4>
+        <p>@Model.CreatorName • @Model.CreateDate.ToShortDateString()</p>
+        <p class="due-date">Строк здачі: @Model.DueDate.ToShortDateString()</p>
+        @if (User.IsInRole("Student"))
+        {
+            <p>@Model.Mark/@Model.MaxMark</p>
+        }
+        else
+        {
+            <p>Максимальна оцінка - @Model.MaxMark</p>
+        }
+        <hr>
+        <p>@Model.TaskText</p>
+        @foreach(var file in Model.Files)
+        {
+            <div class="border list-group-item d-flex justify-content-between align-items-center my-1">
+                <a asp-controller="Task" asp-action="Download" asp-route-id="@file.Id" asp-route-taskId="@Model.TaskId" class="text-decoration-none">@file.Name</a>
+                @if (!User.IsInRole("Student"))
+                {
+                    <a asp-controller="Task" asp-action="Delete" asp-route-id="@file.Id" asp-route-taskId="@Model.TaskId" class="btn btn-danger btn-sm ml-3">✕</a>
+                }
+            </div>
+        }
+        @if (!User.IsInRole("Student"))
+        {
+            <a asp-controller="Task" asp-action="AddFile" asp-route-id="@Model.TaskId" class="btn btn-outline-secondary w-100">Додати файл</a>
+            <a asp-controller="StudentTask" asp-action="Index" asp-route-id="@Model.TaskId" class="btn btn-primary btn-block mt-2 w-100" type="submit">Перевірити роботи</a>
+        }
+
+    </div>
+
+    @if (User.IsInRole("Student")) { 
+        <div class="col-sm-12" style="min-width: 300px; max-width: 400px;">
+            <div class="assignment mt-1">
+                <h5>Мої завдання</h5>
+                <div class="list-group">
+                    @foreach (var file in Model.StudentFiles)
+                    {
+                        <div class="border list-group-item d-flex justify-content-between align-items-center my-1">
+                            <a asp-controller="Task" asp-action="Download" asp-route-id="@file.Id" asp-route-taskId="@Model.TaskId" class="text-decoration-none">@file.Name</a>
+                            <a asp-controller="Task" asp-action="Delete" asp-route-id="@file.Id" asp-route-taskId="@Model.TaskId" class="btn btn-danger btn-sm ml-3">✕</a>
+                        </div>
+                    }
+                </div>
+                @if (Model.IsSubmitted)
+                {
+                    <a asp-controller="Task" asp-action="Cancel" asp-route-id="@Model.StudentTaskId" asp-route-taskId="@Model.TaskId" class="btn btn-primary btn-block mt-2">Скасувати</a>
+                }
+                else
+                {
+                    <a asp-controller="Task" asp-action="AddSF" asp-route-id="@Model.StudentTaskId" asp-route-taskId="@Model.TaskId" class="btn btn-outline-secondary btn-block mt-2">Додати файл</a>
+                    <a asp-controller="Task" asp-action="Submit" asp-route-id="@Model.StudentTaskId" asp-route-taskId="@Model.TaskId" class="btn btn-primary btn-block mt-2">Відправити</a>
+                }
+            </div>
+            <div class="assignment mt-1">
+                <h5>Особисті коментарі</h5>
+                <hr>
+                @foreach(var comment in Model.Comments)
+                {
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <p class="font-weight-bold m-0">@comment.User.Name</p>
+                            <p class="due-date m-0">@comment.CreatedDate.ToLocalTime()</p>
+                            <p class="m-0">@comment.Text</p>
+                        </div>
+                        @if(comment.User.Name == User.Identity.Name)
+                        {
+                            <div class="align-self-center">
+                                <a asp-controller="Task" asp-action="DeleteComment" asp-route-id="@comment.Id" asp-route-taskId="@Model.TaskId" class="btn btn-danger btn-sm ml-3">✕</a>
+                            </div>
+                        }
+                    </div>
+                    <hr>
+                }
+                <form method="post" asp-action="WriteComment" enctype="multipart/form-data">
+                    <input asp-for="TaskId" value="@Model.TaskId" />
+                    <input asp-for="StudentTaskId" value="@Model.StudentTaskId" />
+                    <input asp-for="Comment" class="form-control form-control" placeholder="Додати коментар" />
+                    <button class="btn btn-primary btn-block mt-2" type="submit">✓</button>
+                </form>
+            </div>
+        </div>
+    }
+</div>

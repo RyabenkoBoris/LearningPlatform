@@ -1,0 +1,38 @@
+﻿@model List<UserEntity>
+@{
+    Layout = "_Layout_Admin";
+    ViewData["Title"] = "Вчителі";
+}
+
+<div style="min-width:500px;" class="d-flex justify-content-center">
+    <div class="list-group">
+        <div class="m-3 d-flex justify-content-between">
+            <input style="min-width:300px" class="m-2 w-50 form-control" id="myInput" type="text" onkeyup="Filter(2)" placeholder="Пошук...">
+            <a asp-controller="Teacher" asp-action="Create" class="btn btn-success m-1 w-25 fs-4">Додати</a>
+        </div>
+        <table>
+            <thead class="text-center">
+                <tr>
+                    <th class="p-3 fs-3" scope="col">ПІБ</th>
+                    <th class="p-3 fs-3" scope="col">Підрозділ</th>
+                    <th class="p-3 fs-3" scope="col">Факультет</th>
+                </tr>
+            </thead>
+            <tbody id="list" class="text-center">
+                @{
+                    foreach(var item in Model){
+                        <tr>
+                            <td class="p-3 fs-3"><a asp-controller="Class" asp-action="Index" asp-route-id="@item.Id" class="text-decoration-none">@item.Name</a></td>
+                            <td class="p-3 fs-3">@item.Department.Faculty.Abbreviation</td>
+                            <td class="p-3 fs-3">@item.Department.Abbreviation</td>
+                            <td class="p-3 d-flex justify-content-end">
+                                <a asp-controller="Teacher" asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning m-1">Редагувати</a>
+                                <a asp-controller="Teacher" asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger m-1">Видалити</a>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

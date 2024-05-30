@@ -1,0 +1,62 @@
+﻿@model LearningPlatform.ViewModels.StudentJournalViewModel
+@{
+    ViewData["Title"] = "Оцінки";
+}
+
+<table class="table table-bordered">
+    <h1 class="text-center">@Model.StudentName</h1>
+    <thead>
+        <tr>
+            <th>Дата</th>
+            <th>Викладач</th>
+            <th>Вид контролю</th>
+            <th>Примітка</th>
+            <th>Оцінка</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var grade in Model.Grades)
+        {
+            <tr>
+                <td>@grade.Date.ToLocalTime().ToShortDateString()</td>
+                <td>@grade.Teacher?.User?.Name</td>
+                <td>@grade.AssessmentType?.Name</td>
+                <td>@grade.Note</td>
+                <td>@grade.Mark</td>
+                <td>
+                @if (grade.Teacher.User.Name == User.Identity.Name)
+                {
+                    <a asp-action="Delete" asp-route-id="@grade.Id" asp-route-studentId="@Model.StudentId"
+                                asp-route-journalId="@Model.JournalId" class="btn btn-danger">✕</a>
+                }
+                </td>
+            </tr>
+        }
+
+        <tr>
+            <td>@DateTime.UtcNow.ToLocalTime().ToShortDateString()</td>
+            <td>@User.Identity?.Name</td>
+            <form method="post" asp-action="Add" enctype="multipart/form-data">
+                <input asp-for="JournalId" value="@Model.JournalId" />
+                <input asp-for="StudentId" value="@Model.StudentId" />
+                <input asp-for="TeacherId" value="@Model.TeacherId" />
+                <td>
+                    <select asp-for="AssesmentTypeId" asp-items="@(new SelectList(Model.AssesmentTypes, nameof(AssessmentTypeEntity.Id), nameof(AssessmentTypeEntity.Name)))" class="form-select"></select>
+                    <span asp-validation-for="AssesmentTypeId" class="text-danger"></span>
+                </td>
+                <td><input asp-for="Note" class="form-control form-control"/></td>
+                <td><input asp-for="Mark" class="form-control form-control" min="0" max="1000" /></td>
+                <td><button class="btn btn-success" type="submit">+</button></td>
+            </form>
+        </tr>
+
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="4">Загальний результат:</td>
+            <td>@Model.Sum</td>
+            <td></td>
+        </tr>
+    </tfoot>
+</table>

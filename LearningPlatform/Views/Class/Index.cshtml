@@ -1,0 +1,189 @@
+﻿@model LearningPlatform.ViewModels.TeacherClassesViewModel
+@{
+    Layout = "_Layout_Admin";
+    ViewData["Title"] = "Розклад";
+}
+
+<h3 class="text-center">@Model.Name</h3>
+<div class="row p-2">
+    <div class="col-8">
+        <a asp-controller="TeacherLessons" asp-action="Index" asp-route-id="@Model.Id" class="btn btn-secondary m-1 fs-3">Предмети викладача</a>
+        <a asp-controller="TeacherGroups" asp-action="Index" asp-route-id="@Model.Id" class="btn btn-secondary m-1 fs-3">Групи викладача</a>
+    </div>
+    <div class="col-4">
+        <select class="form-select form-select-lg" onchange="test(this)">
+            <option value="week1" selected>Перший тиждень</option>
+            <option value="week2">Другий тиждень</option>
+        </select>
+    </div>
+</div>
+
+<div id="week1" class="text-center">
+    <h3>Перший тиждень</h3>
+    <table class="mx-auto">
+        <tr>
+            <td></td>
+            <td>Понеділок</td>
+            <td>Вівторок</td>
+            <td>Середа</td>
+            <td>Четвер</td>
+            <td>П'ятниця</td>
+            <td>Субота</td>
+        </tr>
+        @{
+            for(int i = 1; i <= 5; i++)
+            {
+                <tr>
+                    <td>@Model.SheduleSample[i-1]</td>
+                    @{
+                        for(int j=1;j<=6; j++)
+                        {
+                            <td>
+                                @{
+                                    var classEntity = Model.Classes.FirstOrDefault(c => c.DayOfWeek == (DayOfWeek)j &&
+                                    c.LessonNumber == i && c.isFirstWeek);
+                                    if (classEntity != null)
+                                    {
+                                        <span class="lesson">@classEntity.Lesson.Name</span>
+                                        <br>
+                                        @Model.Name
+                                        <br>
+                                        @Model.ClassTypes.FirstOrDefault(t => t.Id == classEntity.ClassTypeId)?.Name
+                                        <br>
+                                        if (classEntity.Groups.Count != 0)
+                                        {
+                                            for (int k = 0; k < classEntity.Groups.Count - 1; k++)
+                                            {
+                                                <span>@classEntity.Groups[k].Name, </span>
+                                            }
+                                            <span>@classEntity.Groups[classEntity.Groups.Count - 1].Name</span>
+                                        }
+                                        else
+                                        {
+                                            <span>Групи відсутні</span>
+                                        }
+                                        <br>
+                                        <a asp-controller="Class" asp-action="AddGroup" asp-route-id="@classEntity.Id" class="btn btn-sm btn-success my-1">Додати групу</a>
+                                        <a asp-controller="Class" asp-action="DeleteGroup" asp-route-id="@classEntity.Id" class="btn btn-sm btn-danger my-1">Видалити групу</a>
+                                        <br>
+                                        <a asp-controller="Class" asp-action="Edit" asp-route-id="@classEntity.Id" class="btn btn-sm btn-warning my-1">Змінити</a>
+                                        <a asp-controller="Class" asp-action="Delete" asp-route-id="@classEntity.Id" class="btn btn-sm btn-danger my-1">Видалити</a>
+                                    }
+                                    else
+                                    {
+                                        <form method="post" asp-action="AddClass" enctype="multipart/form-data">
+
+                                            <div class="col mb-1">
+                                                <input asp-for="Id" value="@Model.Id" />
+                                                <input asp-for="lessonNumber" value="@i" />
+                                                <input asp-for="isFirstWeek" value="@true" />
+                                                <input asp-for="DayOfWeek" value="@((DayOfWeek)j)" />
+                                                <select asp-for="LessonId" asp-items="@(new SelectList(Model.Lessons, nameof(LessonEntity.Id), nameof(LessonEntity.Name)))" class="form-select"></select>
+                                                <span asp-validation-for="LessonId" class="text-danger"></span>
+                                                <select asp-for="ClassTypeId" asp-items="@(new SelectList(Model.ClassTypes, nameof(ClassTypeEntity.Id), nameof(ClassTypeEntity.Name)))" class="form-select"></select>
+                                            </div>
+                                            <button class="btn btn-sm btn-success btn-lg" type="submit">Додати</button>
+                                        </form>
+                                    }
+                                }
+                            </td>
+                        }
+                    }
+                </tr>
+            }
+        }
+    </table>
+</div>
+
+<div id="week2" class="text-center" style="display: none;">
+    <h3>Другий тиждень</h3>
+    <table class="mx-auto">
+        <tr>
+            <td></td>
+            <td>Понеділок</td>
+            <td>Вівторок</td>
+            <td>Середа</td>
+            <td>Четвер</td>
+            <td>П'ятниця</td>
+            <td>Субота</td>
+        </tr>
+        @{
+            for (int i = 1; i <= 5; i++)
+            {
+                <tr>
+                    <td>@Model.SheduleSample[i - 1]</td>
+                    @{
+                        for (int j = 1; j <= 6; j++)
+                        {
+                            <td>
+                                @{
+                                    var classEntity = Model.Classes.FirstOrDefault(c => c.DayOfWeek == (DayOfWeek)j &&
+                                    c.LessonNumber == i && !c.isFirstWeek);
+                                    if (classEntity != null)
+                                    {
+                                        <span class="lesson">@classEntity.Lesson.Name</span>
+                                        <br>
+                                        @Model.Name
+                                        <br>
+                                        @Model.ClassTypes.FirstOrDefault(t => t.Id == classEntity.ClassTypeId)?.Name
+                                        <br>
+                                        if (classEntity.Groups.Count != 0)
+                                        {
+                                            for (int k = 0; k < classEntity.Groups.Count - 1; k++)
+                                            {
+                                                <span>@classEntity.Groups[k].Name, </span>
+                                            }
+                                            <span>@classEntity.Groups[classEntity.Groups.Count - 1].Name</span>
+                                        }
+                                        else
+                                        {
+                                            <span>Групи відсутні</span>
+                                        }
+                                        <br>
+                                        <a asp-controller="Class" asp-action="AddGroup" asp-route-id="@classEntity.Id" class="btn btn-sm btn-success my-1">Додати групу</a>
+                                        <a asp-controller="Class" asp-action="DeleteGroup" asp-route-id="@classEntity.Id" class="btn btn-sm btn-danger my-1">Видалити групу</a>
+                                        <br>
+                                        <a asp-controller="Class" asp-action="Edit" asp-route-id="@classEntity.Id" class="btn btn-sm btn-warning my-1">Змінити</a>
+                                        <a asp-controller="Class" asp-action="Delete" asp-route-id="@classEntity.Id" class="btn btn-sm btn-danger my-1">Видалити</a>
+                                    }
+                                    else
+                                    {
+                                        <form method="post" asp-action="AddClass" enctype="multipart/form-data">
+
+                                            <div class="col mb-1">
+                                                <input asp-for="Id" value="@Model.Id" />
+                                                <input asp-for="lessonNumber" value="@i" />
+                                                <input asp-for="isFirstWeek" value="@false" />
+                                                <input asp-for="DayOfWeek" value="@((DayOfWeek)j)" />
+                                                <select asp-for="LessonId" asp-items="@(new SelectList(Model.Lessons, nameof(LessonEntity.Id), nameof(LessonEntity.Name)))" class="form-select"></select>
+                                                <span asp-validation-for="LessonId" class="text-danger"></span>
+                                                <select asp-for="ClassTypeId" asp-items="@(new SelectList(Model.ClassTypes, nameof(ClassTypeEntity.Id), nameof(ClassTypeEntity.Name)))" class="form-select"></select>
+                                            </div>
+                                            <button class="btn btn-sm btn-success btn-lg" type="submit">Додати</button>
+                                        </form>
+                                    }
+                                }
+                            </td>
+                        }
+                    }
+                </tr>
+            }
+        }
+    </table>
+</div>
+<script>
+    const week1 = document.getElementById("week1");
+    const week2 = document.getElementById("week2");
+    //const temp = document.getElementById("Tue_1_1");
+    //temp.innerHTML = "<span class='lesson'>Іноземна мова професійного спрямування-2. Іноземна мова для професійно-орієнтованого спілкування. Ділове мовлення</span>ст.вик. Шепелєва О. В.<br> Прак on-line";
+    function test(selectObject) {
+        if (selectObject.value === "week1") {
+            week1.style.display = "block"
+            week2.style.display = "none"
+        }
+        else {
+            week1.style.display = "none"
+            week2.style.display = "block"
+        }
+    }
+</script>

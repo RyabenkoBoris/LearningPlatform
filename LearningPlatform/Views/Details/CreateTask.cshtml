@@ -1,0 +1,65 @@
+﻿@model LearningPlatform.ViewModels.TaskViewModel
+@{
+    ViewData["Title"] = "Створити";
+}
+
+<div class="main-container">
+    <section class="space-sm">
+        <div class="container">
+            <div class="row mb-5"></div>
+            <div class="row flex-md-row">
+                <div class="card-body">
+                    <div class="text-center mb-5">
+                        <h1 class="h2 mb-2">Створити завдання</h1>
+                    </div>
+                    <div style="min-width: 300px;" class="row justify-content-center">
+                        <div style="min-width: 250px;" class="col-6 col-lg-5">
+                            <form method="post" asp-action="CreateTask" enctype="multipart/form-data">
+                                <input asp-for="CourseId" value="@Model.CourseId" />
+                                <input asp-for="SectionId" value="@Model.SectionId" />
+                                <div class="form-row form-group">
+                                    <div class="col mb-3">
+                                        <input asp-for="Name" class="form-control form-control-lg" placeholder="Назва" />
+                                        <span asp-validation-for="Name" class="text-danger"></span>
+                                    </div>
+                                    <div class="col mb-3">
+                                        <input asp-for="MaxMark" class="form-control form-control-lg" placeholder="Кількість балів"></input>
+                                        <span asp-validation-for="MaxMark" class="text-danger"></span>
+                                    </div>
+                                    <div class="col mb-3">
+                                        <textarea asp-for="TaskText" class="form-control" rows="5" placeholder="Завдання"></textarea>
+                                        <span asp-validation-for="TaskText" class="text-danger"></span>
+                                    </div>
+                                    <div class="col mb-3" id="sandbox-container">
+                                        <input asp-for="DueDate" type="text" class="form-control" placeholder="Дата">
+                                    </div>
+                                    <div class="col mb-3">
+                                        <input asp-for="DueTime" type="time" class="form-control" required />
+                                        <span asp-validation-for="DueTime" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="form-row form-group">
+                                    <div class="col">
+                                        <button class="btn btn-block btn-success btn-lg" type="submit">Створити</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+
+@section scripts {
+    <script src="~/lib/bootstrap/dist/js/bootstrap-datepicker.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap-datepicker.uk.min.js"></script>
+    <script>
+        $('#sandbox-container input').datepicker({
+            startDate: '+0d',
+            format: "dd.mm.yyyy"
+        });
+    </script>
+}

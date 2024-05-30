@@ -1,0 +1,34 @@
+﻿@model List<GradeEntity>
+@{
+    ViewData["Title"] = "Оцінки";
+}
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Дата</th>
+            <th>Викладач</th>
+            <th>Вид контролю</th>
+            <th>Примітка</th>
+            <th>Оцінка</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var grade in Model)
+        {
+            <tr>
+                <td>@grade.Date.ToLocalTime().ToShortDateString()</td>
+                <td>@grade.Teacher?.User?.Name</td>
+                <td>@grade.AssessmentType?.Name</td>
+                <td>@grade.Note</td>
+                <td>@grade.Mark</td>
+            </tr>
+        }
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="4">Загальний результат:</td>
+            <td>@Model.Sum(g => g.Mark)</td>
+        </tr>
+    </tfoot>
+</table>

@@ -1,0 +1,39 @@
+﻿@model LearningPlatform.ViewModels.SectionViewModel
+@{
+    ViewData["Title"] = "Редагувати";
+}
+
+<div class="main-container">
+    <section class="space-sm">
+        <div class="container">
+            <div class="row mb-5"></div>
+            <div class="row flex-md-row">
+                <div class="card-body">
+                    <div class="text-center mb-5">
+                        <h1 class="h2 mb-2">Редагувати розділ</h1>
+                    </div>
+                    <div style="min-width: 300px;" class="row justify-content-center">
+                        <div style="min-width: 250px;" class="col-6 col-lg-5">
+                            <form method="post" asp-action="EditSection" enctype="multipart/form-data">
+                                <input asp-for="Id" value="@Model.Id" />
+                                <input asp-for="CourseId" value="@Model.CourseId" />
+                                <div class="form-row form-group">
+                                    <div class="col mb-3">
+                                        <input asp-for="Name" class="form-control form-control-lg" placeholder="Назва" />
+                                        <span asp-validation-for="Name" class="text-danger"></span>
+                                    </div>
+                                </div>
+
+                                <div class="form-row form-group">
+                                    <div class="col">
+                                        <button class="btn btn-block btn-warning btn-lg" type="submit">Редагувати</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

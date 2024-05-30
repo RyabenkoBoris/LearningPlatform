@@ -1,0 +1,45 @@
+﻿@model LearningPlatform.ViewModels.JournalEditViewModel
+@{
+    Layout = "_Layout_Admin";
+    ViewData["Title"] = "Редагувати";
+}
+
+<div class="main-container">
+    <section class="space-sm">
+        <div class="container">
+            <div class="row mb-5"></div>
+            <div class="row flex-md-row">
+                <div class="card-body">
+                    <div class="text-center mb-5">
+                        <h1 class="h2 mb-2">Редагувати журнал</h1>
+                        <h3 class="h2 mb-2">@Model.Name</h3>
+                        <h3 class="h2 mb-2">@Model.GroupName</h3>
+                    </div>
+                    <div style="min-width: 300px;" class="row justify-content-center">
+                        <div style="min-width: 250px;" class="col-6 col-lg-5">
+                            <form method="post" asp-action="Edit" enctype="multipart/form-data">
+                                <input asp-for="GroupId" value="@Model.GroupId" />
+                                <input asp-for="JournalId" value="@Model.JournalId" />
+                                <input asp-for="Name" value="@Model.Name" />
+                                <input asp-for="GroupName" value="@Model.GroupName" />
+                                <div class="form-row form-group">
+                                    <div class="col mb-3">
+                                        <input asp-for="Semester" class="form-control form-control-lg" placeholder="Семестр" min="1" max="12" />
+                                        <span asp-validation-for="Semester" class="text-danger"></span>
+                                    </div>
+                                </div>
+
+                                <div class="form-row form-group">
+                                    <div class="col">
+                                        <button class="btn btn-block btn-warning btn-lg" type="submit">Редагувати</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+

@@ -1,0 +1,40 @@
+﻿@model List<JournalEntity>
+@{
+    Layout = "_Layout_Admin";
+    ViewData["Title"] = "Журнали груп";
+}
+
+<div style="min-width:500px;" class="d-flex justify-content-center">
+    <div class="list-group">
+        <div class="m-3 d-flex justify-content-between">
+            <input style="min-width:300px" class="m-2 w-50 form-control" id="myInput" type="text" onkeyup="Filter(2)" placeholder="Пошук...">
+        </div>
+        <div class="text-center">
+            <h1>Журнали - @Model.FirstOrDefault()?.Group?.Name</h1>
+        </div>
+        <table>
+            <tbody id="list" class="text-center">
+                @foreach(var journal in Model)
+                {
+                    <tr>
+                        <td class="p-3 fs-3">@journal.Lesson?.Name</td>
+                        <td class="p-3 d-flex justify-content-end">
+                            @if (journal.Visible)
+                            {
+                                <a asp-controller="GroupJournals" asp-action="Hide" asp-route-id="@journal.Id" asp-route-groupId="@journal.Group.Id" class="btn btn-success m-1">Видимий</a>
+                            }
+                            else
+                            {
+                                <a asp-controller="GroupJournals" asp-action="Show" asp-route-id="@journal.Id" asp-route-groupId="@journal.Group.Id" class="btn btn-danger m-1">Прихований</a>
+                            }
+                            <a asp-controller="GroupJournals" asp-action="Edit" asp-route-id="@journal.Id" class="btn btn-warning m-1">Редагувати</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+@section scripts {
+    <script src="~/js/filter.js" asp-append-version="true"></script>
+}

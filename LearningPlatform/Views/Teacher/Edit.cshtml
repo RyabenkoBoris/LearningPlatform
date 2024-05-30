@@ -1,0 +1,64 @@
+﻿@model LearningPlatform.ViewModels.UserViewModel
+@{
+    Layout = "_Layout_Admin";
+    ViewData["Title"] = "Редагувати";
+}
+
+<div class="main-container">
+    <section class="space-sm">
+        <div class="container">
+            <div class="row mb-5"></div>
+            <div class="row flex-md-row">
+                <div class="card-body">
+                    <div class="text-center mb-5">
+                        <h1 class="h2 mb-2">Редагувати викладача</h1>
+                    </div>
+                    <div style="min-width: 300px;" class="row justify-content-center">
+                        <div style="min-width: 250px;" class="col-6 col-lg-5">
+                            <form method="post" asp-action="Edit" enctype="multipart/form-data">
+                                <input type="hidden" id="AppUserId" name="AppUserId" />
+                                <div class="form-row form-group">
+                                    <div class="col mb-3">
+                                        <input asp-for="Email" class="form-control form-control-lg" placeholder="Email" />
+                                        <span asp-validation-for="Email" class="text-danger"></span>
+                                    </div>
+                                    <div class="col mb-3">
+                                        <input asp-for="Password" class="form-control form-control-lg" placeholder="Пароль" />
+                                        <span asp-validation-for="Password" class="text-danger"></span>
+                                    </div>
+                                    <div class="col mb-3">
+                                        <input asp-for="Name" class="form-control form-control-lg" placeholder="ПІБ" />
+                                        <span asp-validation-for="Name" class="text-danger"></span>
+                                    </div>
+                                    <div class="col mb-3">
+                                        <select id="faculty" asp-items="@(new SelectList(Model.Faculties, nameof(FacultyEntity.Id), nameof(FacultyEntity.Abbreviation)))" class="form-select">
+                                            <option selected>Факультети</option>
+                                        </select>
+                                    </div>
+                                    <div class="col mb-3">
+                                        <select id="department" asp-for="DepartmentId" asp-items="@(new SelectList(Model.Departments, nameof(DepartmentEntity.Id), nameof(DepartmentEntity.Abbreviation)))" class="form-select"></select>
+                                        <span asp-validation-for="DepartmentId" class="text-danger"></span>
+                                    </div>
+                                </div>
+
+                                <div class="form-row form-group">
+                                    <div class="col">
+                                        <button class="btn btn-block btn-warning btn-lg" type="submit">Редагувати</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+@section scripts {
+    <script src="~/js/selectDepartments.js" asp-append-version="true"></script>
+    <script>
+        const faculties = document.getElementById("faculty");
+        faculties.onchange = function () { selectDepartments(@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.Departments))) };
+    </script>
+}

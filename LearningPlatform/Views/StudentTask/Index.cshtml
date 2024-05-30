@@ -1,0 +1,43 @@
+﻿@model LearningPlatform.ViewModels.StudentTaskViewModel
+@{
+    ViewData["Title"] = "Завдання студентів";
+}
+
+
+<div style="min-width:500px;" class="d-flex justify-content-center">
+    <div class="list-group">
+        <div class="m-3 d-flex justify-content-between">
+            <input style="min-width:300px" class="m-2 w-50 form-control" id="myInput" type="text" onkeyup="Filter(2)" placeholder="Пошук...">
+        </div>
+        <div class="text-center">
+            <h1>Студенти</h1>
+        </div>
+        <table>
+            <thead class="text-center">
+                <tr>
+                    <th style="min-width:150px" class="p-3 fs-3" scope="col">ПІБ</th>
+                    <th class="p-3 fs-3" scope="col">Статус роботи</th>
+                </tr>
+            </thead>
+            <tbody id="list" class="text-center">
+                @foreach (var task in Model.StudentTasks)
+                {
+                    <tr>
+                        <td class="p-3 fs-3"><a asp-action="Current" asp-route-id="@task.Id">@task.User.Name</a></td>
+                        @if(@task.IsSubmitted){
+                            <td class="p-3 fs-3">Здано</td>
+                        }
+                        else
+                        {
+                            <td class="p-3 fs-3"></td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section scripts {
+    <script src="~/js/filter.js" asp-append-version="true"></script>
+}

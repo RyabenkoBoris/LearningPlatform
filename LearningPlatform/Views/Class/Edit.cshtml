@@ -1,0 +1,45 @@
+﻿@model LearningPlatform.ViewModels.TeacherClassesViewModel
+@{
+    Layout = "_Layout_Admin";
+    ViewData["Title"] = "Редагувати";
+}
+
+<div class="main-container">
+    <section class="space-sm">
+        <div class="container">
+            <div class="row mb-5"></div>
+            <div class="row flex-md-row">
+                <div class="card-body">
+                    <div class="text-center mb-5">
+                        <h1 class="h2 mb-2">Редагувати предмет</h1>
+                    </div>
+                    <div style="min-width: 300px;" class="row justify-content-center">
+                        <div style="min-width: 250px;" class="col-6 col-lg-5">
+                            <form method="post" asp-action="Edit" enctype="multipart/form-data">
+                                <input asp-for="Id" value="@Model.Id" />
+                                <input asp-for="ClassId" value="@Model.ClassId" />
+                                <input type="hidden" id="AppUserId" name="AppUserId" />
+                                <div class="form-row form-group">
+                                    <div class="col mb-3">
+                                        <select asp-for="LessonId" asp-items="@(new SelectList(Model.Lessons, nameof(LessonEntity.Id), nameof(LessonEntity.Name)))" class="form-select"></select>
+                                        <span asp-validation-for="LessonId" class="text-danger"></span>
+                                    </div>
+                                    <div class="col mb-3">
+                                        <select asp-for="ClassTypeId" asp-items="@(new SelectList(Model.ClassTypes, nameof(ClassTypeEntity.Id), nameof(ClassTypeEntity.Name)))" class="form-select"></select>
+                                    </div>
+                                </div>
+
+                                <div class="form-row form-group">
+                                    <div class="col">
+                                        <button class="btn btn-block btn-warning btn-lg" type="submit">Редагувати</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+

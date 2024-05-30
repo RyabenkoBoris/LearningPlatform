@@ -1,0 +1,122 @@
+﻿@model LearningPlatform.ViewModels.SheduleViewModel
+@{
+    ViewData["Title"] = "Розклад";
+}
+
+
+@if(Model.Classes.Count == 0)
+{
+    <h1 class="text-center">Розкладу немає</h1>
+}
+else
+{
+<div class="d-flex flex-row-reverse">
+    <select class="form-select form-select-lg m-3 w-25" onchange="test(this)">
+        <option value="week1" selected>Перший тиждень</option>
+        <option value="week2">Другий тиждень</option>
+    </select>
+</div>
+
+<div id="week1" class="text-center">
+    <h3>Перший тиждень</h3>
+    <table class="mx-5">
+        <tr>
+            <td></td>
+            <td>Понеділок</td>
+            <td>Вівторок</td>
+            <td>Середа</td>
+            <td>Четвер</td>
+            <td>П'ятниця</td>
+            <td>Субота</td>
+        </tr>
+        @for(int i = 1; i <= 5; i++)
+        {
+            <tr>
+                <td>@Model.SheduleSample[i-1]</td>
+                @{
+                    for(int j=1;j<=6; j++)
+                    {
+                        <td>
+                            @{
+                                var classEntity = Model.Classes.FirstOrDefault(c => c.DayOfWeek == (DayOfWeek)j &&
+                                c.LessonNumber == i && c.isFirstWeek);
+                                if (classEntity != null)
+                                {
+                                    <span class="lesson">@classEntity.Lesson.Name</span>
+                                    <br>
+                                    @if (User.IsInRole("Teacher") || User.IsInRole("Admin"))
+                                    {
+                                        @for (int k = 0; k < classEntity.Groups.Count - 1; k++) 
+                                        {
+                                            <span>@classEntity.Groups[k].Name, </span>
+                                        }
+                                        @if (classEntity.Groups.Count != 0)
+                                        {
+                                            <span>@classEntity.Groups[classEntity.Groups.Count - 1].Name </span>
+                                                <br>
+                                        }
+                                    }
+                                    @Model.ClassTypes.FirstOrDefault(t => t.Id == classEntity.ClassTypeId)?.Name
+                                }
+                            }
+                        </td>
+                    }
+                }
+            </tr>
+        }
+    </table>
+</div>
+
+<div id="week2" class="text-center" style="display: none;">
+    <h3>Другий тиждень</h3>
+    <table class="mx-5">
+        <tr>
+            <td></td>
+            <td>Понеділок</td>
+            <td>Вівторок</td>
+            <td>Середа</td>
+            <td>Четвер</td>
+            <td>П'ятниця</td>
+            <td>Субота</td>
+        </tr>
+        @for (int i = 1; i <= 5; i++)
+        {
+            <tr>
+                <td>@Model.SheduleSample[i - 1]</td>
+                @{
+                    for (int j = 1; j <= 6; j++)
+                    {
+                        <td>
+                            @{
+                                var classEntity = Model.Classes.FirstOrDefault(c => c.DayOfWeek == (DayOfWeek)j &&
+                                c.LessonNumber == i && !c.isFirstWeek);
+                                if (classEntity != null)
+                                {
+                                    <span class="lesson">@classEntity.Lesson.Name</span>
+                                    <br>
+                                    @Model.ClassTypes.FirstOrDefault(t => t.Id == classEntity.ClassTypeId)?.Name
+                                }
+                            }
+                        </td>
+                    }
+                }
+            </tr>
+        }
+    </table>
+</div>
+
+<script>
+    const week1 = document.getElementById("week1");
+    const week2 = document.getElementById("week2");
+    function test(selectObject) {
+        if (selectObject.value === "week1") {
+            week1.style.display = "block"
+            week2.style.display = "none"
+        }
+        else {
+            week1.style.display = "none"
+            week2.style.display = "block"
+        }
+    }
+</script>
+}

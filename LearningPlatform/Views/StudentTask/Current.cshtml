@@ -1,0 +1,59 @@
+﻿@model LearningPlatform.ViewModels.CurrentStudentTaskViewModel
+@{
+    ViewData["Title"] = "Завдання студента";
+}
+
+<div class="row col-lg-9 mx-auto assignment d-flex justify-content-center">
+
+    <div class="col-sm-12" style="min-width: 300px; max-width: 600px;">
+        <div class="assignment mt-1">
+            <div class="d-flex justify-content-between">
+                <h5>Файли студента</h5>
+                <p>@Model.Mark/@Model.MaxMark</p>
+            </div>
+            <div class="list-group">
+                @foreach (var file in Model.StudentFiles)
+                {
+                    <div class="border list-group-item d-flex justify-content-between align-items-center my-1">
+                        <a asp-controller="Task" asp-action="Download" asp-route-id="@file.Id" asp-route-taskId="@Model.TaskId" class="text-decoration-none">@file.Name</a>
+                    </div>
+                }
+            </div>
+            <form method="post" asp-action="Estimate" enctype="multipart/form-data">
+                <div class="d-flex justify-content-between">
+                    <input asp-for="StudentTaskId" value="@Model.StudentTaskId" />
+                    <input asp-for="Mark" class="form-control form-control" placeholder="Оцінити" min="0" max="@Model.MaxMark" />
+                    <button class="btn btn-primary btn-block" type="submit">✓</button>
+                </div>
+            </form>
+        </div>
+        <div class="assignment mt-1">
+            <h5>Особисті коментарі</h5>
+            <hr>
+            @foreach (var comment in Model.Comments)
+            {
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <p class="font-weight-bold m-0">@comment.User.Name</p>
+                        <p class="due-date m-0">@comment.CreatedDate.ToLocalTime()</p>
+                        <p class="m-0">@comment.Text</p>
+                    </div>
+                    @if(comment.User.Name == User.Identity.Name)
+                    {
+                        <div class="align-self-center">
+                            <a asp-controller="StudentTask" asp-action="DeleteComment" asp-route-id="@comment.Id" asp-route-studentTaskId="@Model.StudentTaskId" class="btn btn-danger btn-sm ml-3">✕</a>
+                        </div>
+                    }
+                </div>
+                <hr>
+            }
+            <form method="post" asp-action="WriteComment" enctype="multipart/form-data">
+                <input asp-for="TaskId" value="@Model.TaskId" />
+                <input asp-for="StudentTaskId" value="@Model.StudentTaskId" />
+                <input asp-for="Comment" class="form-control form-control" placeholder="Додати коментар" />
+                <button class="btn btn-primary btn-block mt-2" type="submit">✓</button>
+            </form>
+        </div>
+    </div>
+
+</div>
